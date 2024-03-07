@@ -7,6 +7,7 @@ import org.example.API.*;
 import java.util.List;
 
 public class UserMenu {
+
     private final String jwt;
     private static String MENU =
              "> GÖR VAL:\n"
@@ -85,7 +86,7 @@ public class UserMenu {
                 List<Author> authors = AuthorAPI.getAllAuthors(jwt);
                 int count = 1;
                 for (Author author : authors) {
-                    System.out.println(count + ". ");
+                    System.out.println(count + ". " + author.name());
                     count ++;
                 }
                 displayMenu();
