@@ -1,9 +1,11 @@
 package org.example.menu;
 
+import org.apache.hc.core5.http.ParseException;
 import org.example.util.Scan;
 import org.example.data.*;
 import org.example.API.*;
 
+import java.io.IOException;
 import java.util.List;
 
 public class UserMenu {
@@ -28,7 +30,7 @@ public class UserMenu {
         this.jwt = jwt;
     }
 
-    public void displayMenu() {
+    public void displayMenu() throws IOException, ParseException {
         switchUserChoise(getUserChoiseFromMenu());
     }
 
@@ -36,16 +38,16 @@ public class UserMenu {
     public static Long getUserChoiseFromMenu() {
         return Scan.getLong(MENU );
     }
-    public static Object[] getCreateJokePayload() {
-        Object[] payload = new String[2];
-        payload[0] = Scan.getString(CREATE_JOKE);
-        payload[1] = Scan.getLong(AUTHOR_ID);
+    public static CreateJoke getCreateJokePayload() {
+        CreateJoke payload = new CreateJoke(
+                Scan.getString(CREATE_JOKE),
+                Scan.getLong(AUTHOR_ID));
         return payload;
     }
     private static String getAuthorName() {
         return Scan.getString(CREATE_AUTHOR);
     }
-     void switchUserChoise(Long choise) {
+     void switchUserChoise(Long choise) throws IOException, ParseException {
         switch (choise.intValue()) {
             case 1: {
                 // Hämta ett skämt
