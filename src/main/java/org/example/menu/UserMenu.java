@@ -27,9 +27,9 @@ public class UserMenu {
         switchUserChoise(getUserChoiseFromMenu(MENU));
     }
 
-    // Om det enbart är en USER kan man låta menu vara tomt (""), annars lägg till admin meny
-    public static Long getUserChoiseFromMenu(String menu) {
-        return Scan.getLong(MENU + menu);
+
+    public static Long getUserChoiseFromMenu() {
+        return Scan.getLong(MENU );
     }
     public static Object[] getCreateJokePayload() {
         Object[] payload = new String[2];
