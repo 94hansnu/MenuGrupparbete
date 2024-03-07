@@ -11,7 +11,7 @@ public class LoginResponseDTO {
         this.jwt = jwt;
     }
 
-    public static User getUser() {
+    public  User getUser() {
         return user;
     }
 

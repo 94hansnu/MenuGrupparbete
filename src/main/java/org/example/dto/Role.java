@@ -1,20 +1,19 @@
 package org.example.dto;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Role {
 
+    private Integer roleId;
+
     private String authority;
-
-    public Role(String authority) {
-        this.authority = authority;
-    }
-    public String getAuthority() {
-        return authority;
-    }
-
-    public void setAuthority(String authority) {
-        this.authority = authority;
-    }
-
-
 
 }

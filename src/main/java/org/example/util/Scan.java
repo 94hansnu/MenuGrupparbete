@@ -13,11 +13,13 @@ public class Scan {
 
 
     public static String getString(String print) {
+        Scanner scan = new Scanner(System.in);
         System.out.println(print);
         return scan.nextLine();
     }
     // funkar
     public static Long getLong(String print) {
+        Scanner scanner = new Scanner(System.in);
         System.out.println(print);
         try {
             Long id = scan.nextLong();
