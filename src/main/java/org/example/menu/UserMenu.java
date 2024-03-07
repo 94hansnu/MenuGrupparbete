@@ -23,7 +23,7 @@ public class UserMenu {
         this.jwt = jwt;
     }
 
-    public static void displayMenu() throws InterruptedException {
+    public static void displayMenu() {
         switchUserChoise(getUserChoiseFromMenu(MENU));
     }
 
@@ -40,12 +40,12 @@ public class UserMenu {
     private static String getAuthorName() {
         return Scan.getString(CREATE_AUTHOR);
     }
-    static void switchUserChoise(Long choise) throws InterruptedException {
+    static void switchUserChoise(Long choise) {
         switch (choise.intValue()) {
             case 1: {
                 // Hämta ett skämt
                 System.out.println(JokeAPI.getRandomJoke(jwt).getJoke());
-                System.console().wait(2000);
+                //System.console().wait(2000);
                 displayMenu();
             }
             case 2: {
