@@ -24,7 +24,7 @@ public class UserMenu {
     }
 
     public static void displayMenu() {
-        switchUserChoise(getUserChoiseFromMenu(MENU));
+        switchUserChoise(getUserChoiseFromMenu());
     }
 
 
