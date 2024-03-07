@@ -1,5 +1,6 @@
 package org.example.menu;
 
+import org.apache.hc.core5.http.ParseException;
 import org.example.dto.LoginResponseDTO;
 import org.example.dto.RegistrationDTO;
 import org.example.dto.Role;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.Set;
 
 public class Menu { // huvud meny för att registrering och inloggning
@@ -72,7 +74,7 @@ public class Menu { // huvud meny för att registrering och inloggning
         }
     }
 
-    private void login() {
+    private void login() throws IOException, ParseException {
         String username = Scan.getString("Enter username:");
         String password = Scan.getString("Enter password:");
         String loginUrl = AUTH_API_BASE_URL + "/login";
@@ -90,10 +92,10 @@ public class Menu { // huvud meny för att registrering och inloggning
         }
     }
 
-    private void navigateToMenu(Set<Role> roles) {
+    private void navigateToMenu(Set<Role> roles) throws IOException, ParseException {
         if (roles.stream().anyMatch(role -> role.getAuthority().equals("ADMIN"))) {
-           AdminMenu adminMenu = new AdminMenu(this.jwtToken);
-           adminMenu.displayMenu();
+          // AdminMenu adminMenu = new AdminMenu(this.jwtToken);
+           //adminMenu.displayMenu();
         } else {
             UserMenu userMenu = new UserMenu(this.jwtToken);
             userMenu.displayMenu();
