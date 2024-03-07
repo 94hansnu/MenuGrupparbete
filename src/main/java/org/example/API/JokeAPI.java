@@ -6,13 +6,13 @@ public class JokeAPI {
 
     private static String BASE_URL = "http://localhost:5000/api/v1";
 
-    public Joke getRandomJoke() {
+    public Joke getRandomJoke(String jwt) {
 
     }
-    public List<Joke> getAllJokes() {
+    public List<Joke> getAllJokes(String jwt) {
 
     }
-    public void createJoke(Object[] payload) {
+    public void createJoke(Object[] payload, String jwt) {
 
     }
 }

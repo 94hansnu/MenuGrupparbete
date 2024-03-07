@@ -44,13 +44,13 @@ public class UserMenu {
         switch (choise.intValue()) {
             case 1: {
                 // Hämta ett skämt
-                System.out.println(JokeAPI.getRandomJoke().getJoke());
+                System.out.println(JokeAPI.getRandomJoke(jwt).getJoke());
                 System.console().wait(2000);
                 displayMenu();
             }
             case 2: {
                 // Hämta alla skämt
-                List<Joke> jokes = JokeAPI.getAllJokes();
+                List<Joke> jokes = JokeAPI.getAllJokes(jwt);
                 String haha = "haha";
                 for (Joke joke : jokes) {
                     System.out.println(joke.getJoke());
@@ -60,14 +60,14 @@ public class UserMenu {
             }
             case 3: {
                 // Skapa ett skämt
-                JokeAPI.createJoke(getCreateJokePayload());
+                JokeAPI.createJoke(getCreateJokePayload(), jwt);
                 displayMenu();
             }
             case 4: {
                 // Hämta en författare
                 try {
                     Long authorId = Scan.getLong(AUTHOR_ID);
-                    System.out.println(AuthorAPI.getAuthor(authorId));
+                    System.out.println(AuthorAPI.getAuthor(authorId), jwt);
                     displayMenu();
                 }
                 catch (RuntimeException e) {
@@ -78,7 +78,7 @@ public class UserMenu {
             }
             case 5: {
                 // Hämta alla författare
-                List<Author> authors = AuthorAPI.getAllAuthors();
+                List<Author> authors = AuthorAPI.getAllAuthors(jwt);
                 int count = 1;
                 for (Author author : authors) {
                     System.out.println(count + ". ");
@@ -88,7 +88,7 @@ public class UserMenu {
             }
             case 6: {
                 // Skapa en ny författare
-                AuthorAPI.createAuthor(Scan.getString(CREATE_AUTHOR));
+                AuthorAPI.createAuthor(Scan.getString(CREATE_AUTHOR), jwt);
                 displayMenu();
             }
             case 7: {
