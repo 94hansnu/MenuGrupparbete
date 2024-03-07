@@ -1,6 +1,10 @@
 package org.example.menu;
 
 import org.example.util.Scan;
+import org.example.data.*;
+import org.example.API.*;
+
+import java.util.List;
 
 public class UserMenu {
     private final String jwt;
@@ -23,7 +27,7 @@ public class UserMenu {
         this.jwt = jwt;
     }
 
-    public static void displayMenu() {
+    public void displayMenu() {
         switchUserChoise(getUserChoiseFromMenu());
     }
 
@@ -40,11 +44,11 @@ public class UserMenu {
     private static String getAuthorName() {
         return Scan.getString(CREATE_AUTHOR);
     }
-    static void switchUserChoise(Long choise) {
+     void switchUserChoise(Long choise) {
         switch (choise.intValue()) {
             case 1: {
                 // Hämta ett skämt
-                System.out.println(JokeAPI.getRandomJoke(jwt).getJoke());
+                System.out.println(JokeAPI.getRandomJoke(jwt).joke());
                 //System.console().wait(2000);
                 displayMenu();
             }
@@ -53,7 +57,7 @@ public class UserMenu {
                 List<Joke> jokes = JokeAPI.getAllJokes(jwt);
                 String haha = "haha";
                 for (Joke joke : jokes) {
-                    System.out.println(joke.getJoke());
+                    System.out.println(joke.joke());
                     System.out.println(haha += "haha");
                 }
                 displayMenu();
@@ -67,7 +71,7 @@ public class UserMenu {
                 // Hämta en författare
                 try {
                     Long authorId = Scan.getLong(AUTHOR_ID);
-                    System.out.println(AuthorAPI.getAuthor(authorId), jwt);
+                    System.out.println(AuthorAPI.getAuthor(authorId, jwt));
                     displayMenu();
                 }
                 catch (RuntimeException e) {
