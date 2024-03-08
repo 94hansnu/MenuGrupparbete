@@ -30,7 +30,7 @@ public class Menu { // huvud meny för att registrering och inloggning
         this.jwtToken = null;
     }
 
-    public void displayMenu() {
+    public void displayMenu() throws IOException, ParseException {
         switchUserChoice(getUserChoiceFromMenu());
     }
 
@@ -38,7 +38,7 @@ public class Menu { // huvud meny för att registrering och inloggning
         return Scan.getLong(MENU);
     }
 
-    private void switchUserChoice(Long choice) {
+    private void switchUserChoice(Long choice) throws IOException, ParseException {
         switch (choice.intValue()) {
             case 1:
                 register();
@@ -58,7 +58,7 @@ public class Menu { // huvud meny för att registrering och inloggning
 
 
 
-    private void register() {
+    private void register() throws IOException, ParseException {
         String username = Scan.getString("Enter username:");
         String password = Scan.getString("Enter password");
 
@@ -94,8 +94,8 @@ public class Menu { // huvud meny för att registrering och inloggning
 
     private void navigateToMenu(Set<Role> roles) throws IOException, ParseException {
         if (roles.stream().anyMatch(role -> role.getAuthority().equals("ADMIN"))) {
-          // AdminMenu adminMenu = new AdminMenu(this.jwtToken);
-           //adminMenu.displayMenu();
+          AdminMenu adminMenu = new AdminMenu(this.jwtToken);
+          adminMenu.displayMainMenu();
         } else {
             UserMenu userMenu = new UserMenu(this.jwtToken);
             userMenu.displayMenu();

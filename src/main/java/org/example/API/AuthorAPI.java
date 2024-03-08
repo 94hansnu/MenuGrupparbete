@@ -75,7 +75,7 @@ public class AuthorAPI {
     }
     // Author - ADMIN
     // Metod för att uppdatera författare
-    public static void updateAuthor(int authorId, String updatedName, String token) {
+    public static void updateAuthor(Long authorId, String updatedName, String token) {
         try {
             URL url = new URL(BASE_URL + "/author/" +  authorId);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -96,7 +96,7 @@ public class AuthorAPI {
     }
 
     // Metod för att radera en författare
-    public static void deleteAuthor(int authorId, String token) {
+    public static void deleteAuthor(Long authorId, String token) {
         try {
             URL url = new URL(BASE_URL + "/author/" + authorId);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

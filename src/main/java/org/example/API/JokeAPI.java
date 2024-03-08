@@ -77,7 +77,7 @@ public class JokeAPI {
 
     // Joke - ADMIN
     // Metod för att uppdatera ett skämt
-    public static void updateJoke(int jokeId, String updatedJoke, String token) {
+    public static void updateJoke(Long jokeId, String updatedJoke, String token) {
         try {
             URL url = new URL(BASE_URL + "/jokes/" + jokeId);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -100,7 +100,7 @@ public class JokeAPI {
     }
 
     // Metod för att radera ett skämt
-    public static void deleteJoke(int jokeId, String token) {
+    public static void deleteJoke(Long jokeId, String token) {
         try {
             URL url = new URL(BASE_URL + "/jokes/" + jokeId);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
