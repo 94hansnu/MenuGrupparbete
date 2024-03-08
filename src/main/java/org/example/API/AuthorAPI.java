@@ -16,6 +16,8 @@ import org.example.data.Author;
 import org.example.data.Joke;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,5 +72,42 @@ public class AuthorAPI {
             System.out.println("> Gick ej att lägga till author.");
 
         }
+    }
+    // Author - ADMIN
+    // Metod för att uppdatera författare
+    public static void updateAuthor(int authorId, String updatedName, String token) {
+        try {
+            URL url = new URL(BASE_URL + "/author/" +  authorId);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("PUT");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Authorization", "Bearer " + token);
+            connection.setDoOutput(true);
+
+            String payload = "{\"id\":" + authorId + ", \name\":\"" + updatedName + "\"}";
+
+            connection.getOutputStream().write(payload.getBytes());
+
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+        } catch (IOException e) {
+            System.out.println("IOException: " + e.getMessage());
+        }
+    }
+
+    // Metod för att radera en författare
+    public static void deleteAuthor(int authorId, String token) {
+        try {
+            URL url = new URL(BASE_URL + "/author/" + authorId);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("DELETE");
+            connection.setRequestProperty("Authorization", "Bearer " + token);
+
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+        } catch (IOException e) {
+            System.out.println("IOException: " + e.getMessage());
+        }
+
     }
 }

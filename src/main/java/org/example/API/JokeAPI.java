@@ -17,6 +17,8 @@ import org.example.data.Joke;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -73,4 +75,42 @@ public class JokeAPI {
         }
     }
 
+    // Joke - ADMIN
+    // Metod för att uppdatera ett skämt
+    public static void updateJoke(int jokeId, String updatedJoke, String token) {
+        try {
+            URL url = new URL(BASE_URL + "/jokes/" + jokeId);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("PUT");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Authorization", "Bearer " + token);
+            connection.setDoOutput(true);
+
+            // JSON-payload för att skicka uppdaterad information om skämtet
+            String payload = "{\"id\":" + jokeId + ", \"joke\":\"" + updatedJoke + "\"}";
+
+            connection.getOutputStream().write(payload.getBytes());
+
+            // Tar emot svarskod från servern
+            int responsCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responsCode);
+        } catch (IOException e) {
+            System.out.println("IOException: " + e.getMessage());
+        }
+    }
+
+    // Metod för att radera ett skämt
+    public static void deleteJoke(int jokeId, String token) {
+        try {
+            URL url = new URL(BASE_URL + "/jokes/" + jokeId);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("DELETE");
+            connection.setRequestProperty("Authorization", "Bearer " + token);
+
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+        } catch (IOException e) {
+            System.out.println("IOException: " + e.getMessage());
+        }
+    }
 }
