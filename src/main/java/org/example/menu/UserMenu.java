@@ -65,13 +65,14 @@ public class UserMenu {
                 for (Joke joke : jokes) {
                     System.out.println("> Författare: " + joke.author().name());
                     System.out.println(joke.joke());
-                    haha += "haha";
+
                     if (count % 2 == 0) {
                         System.out.println(haha.toUpperCase() + "\n\n");
                     }
                     else {
                         System.out.println(haha + "\n\n");
                     }
+                    haha += "haha";
                     count ++;
                 }
                 displayMenu();
