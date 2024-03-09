@@ -12,13 +12,6 @@ public class AdminMenu {
         this.jwt = jwt;
     }
 
-    public static void main(String[] args) {
-
-        //token = "dummyToken";
-
-        displayMainMenu();
-    }
-
      static void displayMainMenu() {
         while (true) {
             System.out.println("Välkommen till AdminMenyn!");

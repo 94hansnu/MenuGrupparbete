@@ -71,7 +71,7 @@ public class JokeAPI {
         CloseableHttpResponse response = httpClient.execute(post);
 
         if (response.getCode() != 200) {
-            System.out.println("> Dåligt skämt, detta publiceras inte.");
+            System.out.println("> Dåligt skämt, detta publiceras inte. Du kanske ska försöka att ange en författare som finns?");
         }
     }
 

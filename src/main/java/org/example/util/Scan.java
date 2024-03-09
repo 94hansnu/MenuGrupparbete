@@ -3,6 +3,8 @@ package org.example.util;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import static org.example.util.Validator.isNumeric;
+
 public class Scan {
 
     private static Scanner scan;
@@ -19,13 +21,16 @@ public class Scan {
     }
     // funkar
     public static Long getLong(String print) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println(print);
-        try {
-            Long id = scan.nextLong();
-            return id;
-        } catch (InputMismatchException e) {
-            throw new RuntimeException(); // Kasta fel vid fel inmatning
+        String userInput = getString(print);
+        while (!isNumeric(userInput)) {
+            userInput = getString("> Skriv in ett giltligt nummervärde.");
+            try {
+                Long id = Long.valueOf(userInput);
+                return id;
+            } catch (NumberFormatException e) {
+                System.out.println("> Försök igen.");
+            }
         }
+        return  Long.valueOf(userInput);
     }
 }

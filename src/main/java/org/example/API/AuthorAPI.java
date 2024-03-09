@@ -13,6 +13,7 @@ import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.example.data.Author;
+import org.example.data.CreateAuthor;
 import org.example.data.Joke;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class AuthorAPI {
         CloseableHttpResponse response = httpClient.execute(get);
 
         if (response.getCode() != 200) {
-            return new Author("> Askkungen");
+            return null;
         }
 
         HttpEntity entity = response.getEntity();
@@ -45,7 +46,7 @@ public class AuthorAPI {
 
     public static List<Author> getAllAuthors(String jwt) throws IOException, ParseException {
         HttpGet get = new HttpGet(BASE_URL);
-
+        get.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " +jwt);
         CloseableHttpResponse response = httpClient.execute(get);
 
         if (response.getCode() != 200) {
@@ -61,15 +62,16 @@ public class AuthorAPI {
 
     }
 
-    public static void createAuthor(String name, String jwt) throws IOException {
+    public static void createAuthor(CreateAuthor author, String jwt) throws IOException {
         HttpPost post = new HttpPost(BASE_URL);
         post.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
-        post.setEntity(createPayload(name));
+        post.setEntity(createPayload(author));
 
         CloseableHttpResponse response = httpClient.execute(post);
 
-        if(response.getCode() != 200) {
+        if(response.getCode() != 201) {
             System.out.println("> Gick ej att lägga till author.");
+            System.out.println(response.getCode() + response.getReasonPhrase());
 
         }
     }

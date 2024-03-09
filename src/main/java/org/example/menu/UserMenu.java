@@ -12,7 +12,7 @@ public class UserMenu {
 
     private final String jwt;
     private static String MENU =
-             "> GÖR VAL:\n"
+             "> GÖR VAL:\n\n"
             +"> HÄMTA ETT SKÄMT:         [1]\n"
             +"> HÄMTA ALLA SKÄMT:        [2]\n"
             +"> SKAPA ETT SKÄMT:         [3]\n"
@@ -48,39 +48,55 @@ public class UserMenu {
         return Scan.getString(CREATE_AUTHOR);
     }
      void switchUserChoise(Long choise) throws IOException, ParseException {
+
         switch (choise.intValue()) {
             case 1: {
                 // Hämta ett skämt
                 System.out.println(JokeAPI.getRandomJoke(jwt).joke());
                 //System.console().wait(2000);
                 displayMenu();
+                break;
             }
             case 2: {
                 // Hämta alla skämt
                 List<Joke> jokes = JokeAPI.getAllJokes(jwt);
                 String haha = "haha";
+                int count = 0;
                 for (Joke joke : jokes) {
+                    System.out.println("> Författare: " + joke.author().name());
                     System.out.println(joke.joke());
-                    System.out.println(haha += "haha");
+                    haha += "haha";
+                    if (count % 2 == 0) {
+                        System.out.println(haha.toUpperCase() + "\n\n");
+                    }
+                    else {
+                        System.out.println(haha + "\n\n");
+                    }
+                    count ++;
                 }
                 displayMenu();
+                break;
             }
             case 3: {
                 // Skapa ett skämt
                 JokeAPI.createJoke(getCreateJokePayload(), jwt);
                 displayMenu();
+                break;
             }
             case 4: {
                 // Hämta en författare
-                try {
+
                     Long authorId = Scan.getLong(AUTHOR_ID);
-                    System.out.println(AuthorAPI.getAuthor(authorId, jwt));
+                    Author author = AuthorAPI.getAuthor(authorId, jwt);
+                    if (author  == null) {
+                        System.out.println("> Författare med detta ID finns inte.");
+                    }
+                    else {
+                        System.out.println("> Namn: " + author.name());
+                    }
                     displayMenu();
-                }
-                catch (RuntimeException e) {
-                    System.out.println("> Skriv in ett giltligt ID värde.");
-                    switchUserChoise(4L);
-                }
+
+                break;
 
             }
             case 5: {
@@ -91,19 +107,25 @@ public class UserMenu {
                     System.out.println(count + ". " + author.name());
                     count ++;
                 }
+                System.out.println();
                 displayMenu();
+                break;
             }
             case 6: {
                 // Skapa en ny författare
-                AuthorAPI.createAuthor(Scan.getString(CREATE_AUTHOR), jwt);
+                CreateAuthor author = new CreateAuthor(null, Scan.getString(CREATE_AUTHOR));
+                AuthorAPI.createAuthor(author, jwt);
                 displayMenu();
+                break;
             }
             case 7: {
-                System.exit(66);
+                System.exit(0);
+                break;
             }
             default: {
                 System.out.println("Gör ett bättre val...");
                 displayMenu();
+                break;
             }
 
         }
