@@ -79,7 +79,7 @@ public class JokeAPI {
     // Metod för att uppdatera ett skämt
     public static void updateJoke(Long jokeId, String updatedJoke, String token) {
         try {
-            URL url = new URL(BASE_URL + "/jokes/" + jokeId);
+            URL url = new URL(BASE_URL + "/" + jokeId);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("PUT");
             connection.setRequestProperty("Content-Type", "application/json");
@@ -102,7 +102,7 @@ public class JokeAPI {
     // Metod för att radera ett skämt
     public static void deleteJoke(Long jokeId, String token) {
         try {
-            URL url = new URL(BASE_URL + "/jokes/" + jokeId);
+            URL url = new URL(BASE_URL + "/" + jokeId);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("DELETE");
             connection.setRequestProperty("Authorization", "Bearer " + token);

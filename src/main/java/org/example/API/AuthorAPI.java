@@ -79,18 +79,22 @@ public class AuthorAPI {
     // Metod för att uppdatera författare
     public static void updateAuthor(Long authorId, String updatedName, String token) {
         try {
-            URL url = new URL(BASE_URL + "/author/" +  authorId);
+            URL url = new URL(BASE_URL + "/" +  authorId);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("PUT");
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Authorization", "Bearer " + token);
             connection.setDoOutput(true);
 
-            String payload = "{\"id\":" + authorId + ", \name\":\"" + updatedName + "\"}";
+            String payload = "{\"id\":" + authorId + ", \"name\":\"" + updatedName + "\"}";
 
             connection.getOutputStream().write(payload.getBytes());
 
             int responseCode = connection.getResponseCode();
+            if (responseCode != 200) {
+                throw new IOException("Författaren med ID: " + authorId + " hittades inte.");
+            }
+
             System.out.println("Response Code: " + responseCode);
         } catch (IOException e) {
             System.out.println("IOException: " + e.getMessage());
@@ -100,7 +104,7 @@ public class AuthorAPI {
     // Metod för att radera en författare
     public static void deleteAuthor(Long authorId, String token) {
         try {
-            URL url = new URL(BASE_URL + "/author/" + authorId);
+            URL url = new URL(BASE_URL + "/" + authorId);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("DELETE");
             connection.setRequestProperty("Authorization", "Bearer " + token);

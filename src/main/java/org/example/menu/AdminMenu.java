@@ -3,7 +3,11 @@ package org.example.menu;
 import org.example.API.AuthorAPI;
 import org.example.API.JokeAPI;
 import org.example.API.UserAPI;
+import org.example.dto.User;
 import org.example.util.Scan;
+
+import java.io.IOException;
+import java.util.List;
 
 public class AdminMenu {
     private static String jwt;
@@ -12,7 +16,7 @@ public class AdminMenu {
         this.jwt = jwt;
     }
 
-     static void displayMainMenu() {
+     static void displayMainMenu() throws IOException {
         while (true) {
             System.out.println("Välkommen till AdminMenyn!");
             System.out.println("Välj ett alternativ:");
@@ -44,7 +48,7 @@ public class AdminMenu {
     // Hantera skämtMeny
     private static void handleJokeMenu() {
         while (true) {
-            System.out.println("Välkommen till JokeMenyn");
+            System.out.println("[JOKEMENY]");
             System.out.println("Välj ett alternativ:");
             System.out.println("1. Uppdatera skämt");
             System.out.println("2. Radera skämt");
@@ -81,7 +85,7 @@ public class AdminMenu {
     // Hantera FörfattarMeny
     private static void handleAuthorMenu() {
         while (true) {
-            System.out.println("Välkommen till AuthorMenyn!");
+            System.out.println("[AUTHORMENY]!");
             System.out.println("Välj ett alternativ:");
             System.out.println("1. Uppdatera författare");
             System.out.println("2. Radera författare");
@@ -115,9 +119,9 @@ public class AdminMenu {
     }
 
     // Hantera UserMenu
-    private static void handleUserMenu() {
+    private static void handleUserMenu() throws IOException {
         while (true) {
-            System.out.println("UserMeny");
+            System.out.println("[USERMENY]");
             System.out.println("välj ett alternativ");
             System.out.println("1. Hämta användare med specifikt ID");
             System.out.println("2. Hämta alla användare");
@@ -129,9 +133,9 @@ public class AdminMenu {
 
             Long choice = Scan.getLong("Ange ditt val:");
             switch (choice.intValue()) {
-                case 1:
+                /*case 1:
                     getUserById();
-                    break;
+                    break;*/
                 case 2:
                     getAllUsers();
                     break;
@@ -155,13 +159,27 @@ public class AdminMenu {
         }
     }
 
-    private static void getUserById() {
+    /*private static void getUserById() {
         Long userId = Scan.getLong("Ange ID för användaren du vill hämta:");
-        UserAPI.getUserById(userId, jwt);
-    }
+        String username= UserAPI.getUserById(userId, jwt);
+        if (username != null) {
+            System.out.println("Användarinformation:");
+            System.out.println(user.getUsername());
+        } else {
+            System.out.println("Användaren med ID " + userId + " hittades inte.");
+        }
+    }*/
 
-    private static void getAllUsers() {
-        UserAPI.getAllUsers(jwt);
+    private static void getAllUsers() throws IOException {
+        try {
+            List<User> users = UserAPI.getAllUsers(jwt);
+            System.out.println("Alla användare:");
+            for (User user : users) {
+                System.out.println(user.getUsername());
+            }
+        } catch (IOException e) {
+            System.out.println("IOException " + e.getMessage());
+        }
     }
 
     private static void updateUser() {

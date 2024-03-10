@@ -1,41 +1,59 @@
 package org.example.API;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.dto.User;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 public class UserAPI {
     private static final String BASE_URL = "http://localhost:5000/api/v1";
 
     // USER
-    // Metod för att hämta en användare med specifikt ID
-    public static void getUserById(Long userId, String token) {
+   /* // Metod för att hämta en användare med specifikt ID
+    public static void getUserById(Long userId, String jwt) {
         try {
             URL url = new URL(BASE_URL + "/admin/" + userId);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-            connection.setRequestProperty("Authorization", "Bearer " + token);
+            connection.setRequestProperty("Authorization", "Bearer " + jwt);
 
             int responseCode = connection.getResponseCode();
             System.out.println("Response Code: " + responseCode);
+
         } catch (IOException e) {
             System.out.println("IOException: " + e.getMessage());
+            return null;
         }
-    }
+    }*/
 
 
     // Metod för att hämta alla användare
-    public static void getAllUsers(String token) {
+    public static List<User> getAllUsers(String jwt) throws IOException {
         try {
             URL url = new URL(BASE_URL + "/admin/");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-            connection.setRequestProperty("Authorization", "Bearer " + token);
+            connection.setRequestProperty("Authorization", "Bearer " + jwt);
 
             int responseCode = connection.getResponseCode();
             System.out.println("Response Code: " + responseCode);
+
+            if (responseCode != 200) {
+                throw new IOException("Kunde inte hämta användare. Responskod: " + responseCode);
+            }
+
+            // Hämta JSON-svaret från servern och konvertera till en lista med användare
+            ObjectMapper mapper = new ObjectMapper();
+            List<User> users = mapper.readValue(connection.getInputStream(), new TypeReference<List<User>>() {});
+
+            return users;
         } catch (IOException e) {
             System.out.println("IOException: " + e.getMessage());
+            throw e; // Kasta vidare IOException om något går fel
         }
     }
 
