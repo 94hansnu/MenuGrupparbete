@@ -12,8 +12,10 @@ import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.example.data.CreateJoke;
 import org.example.data.Joke;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -76,24 +78,27 @@ public class JokeAPI {
     }
 
     // Joke - ADMIN
-    // Metod för att uppdatera ett skämt
+// Metod för att uppdatera ett skämt
     public static void updateJoke(Long jokeId, String updatedJoke, String token) {
         try {
-            URL url = new URL(BASE_URL + "/" + jokeId);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("PUT");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Authorization", "Bearer " + token);
-            connection.setDoOutput(true);
+            HttpPut put = new HttpPut(BASE_URL + "/" + jokeId);
+            put.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+            put.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
 
-            // JSON-payload för att skicka uppdaterad information om skämtet
-            String payload = "{\"id\":" + jokeId + ", \"joke\":\"" + updatedJoke + "\"}";
+            JSONObject payloadJson = new JSONObject();
+            payloadJson.put("id", jokeId);
+            payloadJson.put("joke", updatedJoke);
 
-            connection.getOutputStream().write(payload.getBytes());
+            StringEntity payload = createPayload(payloadJson);
 
-            // Tar emot svarskod från servern
-            int responsCode = connection.getResponseCode();
-            System.out.println("Response Code: " + responsCode);
+            put.setEntity(payload);
+
+            CloseableHttpResponse response = httpClient.execute(put);
+
+            int responseCode = response.getCode();
+            System.out.println("Response Code: " + responseCode);
+
+            response.close();
         } catch (IOException e) {
             System.out.println("IOException: " + e.getMessage());
         }

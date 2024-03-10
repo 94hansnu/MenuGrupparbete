@@ -13,8 +13,8 @@ public class UserAPI {
     private static final String BASE_URL = "http://localhost:5000/api/v1";
 
     // USER
-   /* // Metod för att hämta en användare med specifikt ID
-    public static void getUserById(Long userId, String jwt) {
+    // Metod för att hämta en användare med specifikt ID
+    public static String getUserById(Long userId, String jwt) {
         try {
             URL url = new URL(BASE_URL + "/admin/" + userId);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -28,7 +28,8 @@ public class UserAPI {
             System.out.println("IOException: " + e.getMessage());
             return null;
         }
-    }*/
+        return jwt;
+    }
 
 
     // Metod för att hämta alla användare

@@ -1,13 +1,23 @@
 package org.example.menu;
 
+import org.apache.hc.core5.http.ParseException;
 import org.example.API.AuthorAPI;
 import org.example.API.JokeAPI;
 import org.example.API.UserAPI;
+import org.example.data.Author;
+import org.example.data.CreateAuthor;
+import org.example.data.CreateJoke;
+import org.example.data.Joke;
 import org.example.dto.User;
 import org.example.util.Scan;
 
 import java.io.IOException;
 import java.util.List;
+
+import static org.example.API.AuthorAPI.*;
+import static org.example.API.JokeAPI.*;
+
+import static org.example.menu.UserMenu.getCreateJokePayload;
 
 public class AdminMenu {
     private static String jwt;
@@ -15,8 +25,11 @@ public class AdminMenu {
     public AdminMenu(String jwt) {
         this.jwt = jwt;
     }
+    private static String CREATE_JOKE = "> ANGE SKÄMT: ";
+    private static String AUTHOR_ID = "> ANGE FÖRFATTAR ID: ";
+    private static String CREATE_AUTHOR = "> ANGE FÖRFATTARENS NAMN: ";
 
-     static void displayMainMenu() throws IOException {
+     static void displayMainMenu() throws IOException, ParseException {
         while (true) {
             System.out.println("Välkommen till AdminMenyn!");
             System.out.println("Välj ett alternativ:");
@@ -46,12 +59,15 @@ public class AdminMenu {
     }
 
     // Hantera skämtMeny
-    private static void handleJokeMenu() {
+    private static void handleJokeMenu() throws IOException, ParseException {
         while (true) {
             System.out.println("[JOKEMENY]");
             System.out.println("Välj ett alternativ:");
             System.out.println("1. Uppdatera skämt");
             System.out.println("2. Radera skämt");
+            System.out.println("3. Skapa nytt skämt");
+            System.out.println("4. Hämta ett slumpmässigt skämt");
+            System.out.println("5. Hämta alla skämt");
             System.out.println("0. Tillbaka till huvudmenyn");
 
 
@@ -63,6 +79,30 @@ public class AdminMenu {
             case 2:
                 deleteJoke();
                 break;
+            case 3:
+                createJoke(getCreateJokePayload(), jwt);
+                break;
+            case 4:
+                System.out.println(JokeAPI.getRandomJoke(jwt).joke());
+                break;
+            case 5:
+                List<Joke> jokes = JokeAPI.getAllJokes(jwt);
+                String haha = "haha";
+                int count = 0;
+                for (Joke joke : jokes) {
+                    System.out.println("> Författare: " + joke.author().name());
+                    System.out.println(joke.joke());
+
+                    if (count % 2 == 0) {
+                        System.out.println(haha.toUpperCase() + "\n\n");
+                    }
+                    else {
+                        System.out.println(haha + "\n\n");
+                    }
+                    haha += "haha";
+                    count ++;
+                }
+                break;
             case 0:
                 return;
             default:
@@ -70,6 +110,8 @@ public class AdminMenu {
         }
     }
 }
+
+    // behöver fixas.
     private static void updateJoke() {
 
         Long jokeId = Scan.getLong("Ange ID för skämtet du vill uppdatera:");
@@ -83,12 +125,15 @@ public class AdminMenu {
     }
 
     // Hantera FörfattarMeny
-    private static void handleAuthorMenu() {
+    private static void handleAuthorMenu() throws IOException, ParseException {
         while (true) {
             System.out.println("[AUTHORMENY]!");
             System.out.println("Välj ett alternativ:");
             System.out.println("1. Uppdatera författare");
             System.out.println("2. Radera författare");
+            System.out.println("3. Skapa en författare");
+            System.out.println("4. Hämta en författare");
+            System.out.println("5. Hämta alla författare");
             System.out.println("0. Tillbaka till huvudmenyn");
 
             Long choice = Scan.getLong("Ange ditt val: ");
@@ -98,6 +143,29 @@ public class AdminMenu {
                     break;
                 case 2:
                     deleteAuthor();
+                    break;
+                case 3:
+                    CreateAuthor author = new CreateAuthor(null, Scan.getString(CREATE_AUTHOR));
+                    AuthorAPI.createAuthor(author, jwt);
+                    break;
+                case 4:
+                    Long authorId = Scan.getLong(AUTHOR_ID);
+                    Author authorr = AuthorAPI.getAuthor(authorId, jwt);
+                    if (authorr  == null) {
+                        System.out.println("> Författare med detta ID finns inte.");
+                    }
+                    else {
+                        System.out.println("> Namn: " + authorr.name());
+                    }
+                    break;
+                case 5:
+                    List<Author> authors = AuthorAPI.getAllAuthors(jwt);
+                    int count = 1;
+                    for (Author author3 : authors) {
+                        System.out.println(count + ". " + author3.name());
+                        count ++;
+                    }
+                    System.out.println();
                     break;
                 case 0:
                     return;
@@ -133,9 +201,9 @@ public class AdminMenu {
 
             Long choice = Scan.getLong("Ange ditt val:");
             switch (choice.intValue()) {
-                /*case 1:
+                case 1:
                     getUserById();
-                    break;*/
+                    break;
                 case 2:
                     getAllUsers();
                     break;
@@ -159,16 +227,17 @@ public class AdminMenu {
         }
     }
 
-    /*private static void getUserById() {
+    // behöver fixas.
+    private static void getUserById() {
         Long userId = Scan.getLong("Ange ID för användaren du vill hämta:");
         String username= UserAPI.getUserById(userId, jwt);
         if (username != null) {
             System.out.println("Användarinformation:");
-            System.out.println(user.getUsername());
+            System.out.println(UserAPI.getUserById(userId, jwt));
         } else {
             System.out.println("Användaren med ID " + userId + " hittades inte.");
         }
-    }*/
+    }
 
     private static void getAllUsers() throws IOException {
         try {
