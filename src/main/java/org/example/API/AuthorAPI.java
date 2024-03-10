@@ -1,6 +1,5 @@
 package org.example.API;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
@@ -13,8 +12,7 @@ import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.example.data.Author;
-import org.example.data.CreateAuthor;
-import org.example.data.Joke;
+import org.example.data.CreateAuthorDTO;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -62,7 +60,7 @@ public class AuthorAPI {
 
     }
 
-    public static void createAuthor(CreateAuthor author, String jwt) throws IOException {
+    public static void createAuthor(CreateAuthorDTO author, String jwt) throws IOException {
         HttpPost post = new HttpPost(BASE_URL);
         post.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
         post.setEntity(createPayload(author));

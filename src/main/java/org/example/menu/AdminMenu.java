@@ -5,16 +5,15 @@ import org.example.API.AuthorAPI;
 import org.example.API.JokeAPI;
 import org.example.API.UserAPI;
 import org.example.data.Author;
-import org.example.data.CreateAuthor;
-import org.example.data.CreateJoke;
+import org.example.data.CreateAuthorDTO;
 import org.example.data.Joke;
+import org.example.data.UpdateJokeDTO;
 import org.example.dto.User;
 import org.example.util.Scan;
 
 import java.io.IOException;
 import java.util.List;
 
-import static org.example.API.AuthorAPI.*;
 import static org.example.API.JokeAPI.*;
 
 import static org.example.menu.UserMenu.getCreateJokePayload;
@@ -116,7 +115,8 @@ public class AdminMenu {
 
         Long jokeId = Scan.getLong("Ange ID för skämtet du vill uppdatera:");
         String updatedJoke = Scan.getString("Ange det uppdaterade skämtet:");
-        JokeAPI.updateJoke(jokeId, updatedJoke, jwt);
+        UpdateJokeDTO updateJoke = new UpdateJokeDTO(jokeId, updatedJoke);
+        JokeAPI.updateJoke(updateJoke, jwt);
     }
 
     private static void deleteJoke() {
@@ -145,7 +145,7 @@ public class AdminMenu {
                     deleteAuthor();
                     break;
                 case 3:
-                    CreateAuthor author = new CreateAuthor(null, Scan.getString(CREATE_AUTHOR));
+                    CreateAuthorDTO author = new CreateAuthorDTO(null, Scan.getString(CREATE_AUTHOR));
                     AuthorAPI.createAuthor(author, jwt);
                     break;
                 case 4:

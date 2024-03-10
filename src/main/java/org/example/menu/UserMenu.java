@@ -38,8 +38,8 @@ public class UserMenu {
     public static Long getUserChoiseFromMenu() {
         return Scan.getLong(MENU );
     }
-    public static CreateJoke getCreateJokePayload() {
-        CreateJoke payload = new CreateJoke(
+    public static CreateJokeDTO getCreateJokePayload() {
+        CreateJokeDTO payload = new CreateJokeDTO(
                 Scan.getString(CREATE_JOKE),
                 Scan.getLong(AUTHOR_ID));
         return payload;
@@ -114,7 +114,7 @@ public class UserMenu {
             }
             case 6: {
                 // Skapa en ny författare
-                CreateAuthor author = new CreateAuthor(null, Scan.getString(CREATE_AUTHOR));
+                CreateAuthorDTO author = new CreateAuthorDTO(null, Scan.getString(CREATE_AUTHOR));
                 AuthorAPI.createAuthor(author, jwt);
                 displayMenu();
                 break;

@@ -13,16 +13,15 @@ import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
-import org.example.data.CreateJoke;
+import org.example.data.CreateJokeDTO;
 import org.example.data.Joke;
+import org.example.data.UpdateJokeDTO;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.example.API.payload.Payload.createPayload;
@@ -65,7 +64,7 @@ public class JokeAPI {
         ArrayList<Joke> jokes = mapper.readValue(EntityUtils.toString(entity), new TypeReference<ArrayList<Joke>>() {});
         return jokes;
     }
-    public static void createJoke(CreateJoke payload, String jwt) throws IOException {
+    public static void createJoke(CreateJokeDTO payload, String jwt) throws IOException {
         HttpPost post = new HttpPost(BASE_URL);
         post.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
         post.setEntity(createPayload(payload));
@@ -79,19 +78,22 @@ public class JokeAPI {
 
     // Joke - ADMIN
 // Metod för att uppdatera ett skämt
-    public static void updateJoke(Long jokeId, String updatedJoke, String token) {
+    public static void updateJoke(UpdateJokeDTO dto, String token) {
         try {
-            HttpPut put = new HttpPut(BASE_URL + "/" + jokeId);
+            HttpPut put = new HttpPut(BASE_URL /*+ "/" + jokeId*/);
             put.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
             put.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
 
-            JSONObject payloadJson = new JSONObject();
+            /*JSONObject payloadJson = new JSONObject();
             payloadJson.put("id", jokeId);
             payloadJson.put("joke", updatedJoke);
 
-            StringEntity payload = createPayload(payloadJson);
 
-            put.setEntity(payload);
+            StringEntity payload = createPayload(payloadJson);*/
+
+            put.setEntity(createPayload(dto));
+
+           // put.setEntity(payload);
 
             CloseableHttpResponse response = httpClient.execute(put);
 
