@@ -2,6 +2,15 @@ package org.example.API;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpHeaders;
+import org.apache.hc.core5.http.ParseException;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.example.data.Joke;
 import org.example.dto.User;
 
 import java.io.IOException;
@@ -11,6 +20,7 @@ import java.util.List;
 
 public class UserAPI {
     private static final String BASE_URL = "http://localhost:5000/api/v1";
+    private static final CloseableHttpClient httpClient = HttpClients.createDefault();
 
     // USER
     // Metod för att hämta en användare med specifikt ID
@@ -29,6 +39,22 @@ public class UserAPI {
             return null;
         }
         return jwt;
+    }
+
+    public static User getUserByIdd(Long id, String jwt) throws IOException, ParseException {
+        HttpGet get = new HttpGet(BASE_URL + "/admin/" + id);
+        get.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
+        CloseableHttpResponse response = httpClient.execute(get);
+
+        if (response.getCode() != 200) {
+            return new User();
+        }
+
+        HttpEntity entity = response.getEntity();
+        ObjectMapper mapper = new ObjectMapper();
+
+        User user = mapper.readValue(EntityUtils.toString(entity), User.class);
+        return user;
     }
 
 

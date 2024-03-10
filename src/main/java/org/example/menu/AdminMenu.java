@@ -168,6 +168,7 @@ public class AdminMenu {
                     System.out.println();
                     break;
                 case 0:
+
                     return;
                 default:
                     System.out.println("Ogiltigt val. Prova igen.");
@@ -187,7 +188,7 @@ public class AdminMenu {
     }
 
     // Hantera UserMenu
-    private static void handleUserMenu() throws IOException {
+    private static void handleUserMenu() throws IOException, ParseException {
         while (true) {
             System.out.println("[USERMENY]");
             System.out.println("välj ett alternativ");
@@ -228,12 +229,16 @@ public class AdminMenu {
     }
 
     // behöver fixas.
-    private static void getUserById() {
+    private static void getUserById() throws IOException, ParseException {
         Long userId = Scan.getLong("Ange ID för användaren du vill hämta:");
         String username= UserAPI.getUserById(userId, jwt);
-        if (username != null) {
+        User user = UserAPI.getUserByIdd(userId, jwt);
+        if (username != null && user != null) {
             System.out.println("Användarinformation:");
             System.out.println(UserAPI.getUserById(userId, jwt));
+            System.out.println("NAMN: " + user.getUsername());
+            System.out.println("LÖSENORD: " + user.getPassword());
+            System.out.println("AUTHORITIES: " + user.getAuthorities());
         } else {
             System.out.println("Användaren med ID " + userId + " hittades inte.");
         }
