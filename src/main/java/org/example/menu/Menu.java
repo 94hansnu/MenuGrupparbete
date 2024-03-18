@@ -22,7 +22,7 @@ public class Menu { // huvud meny för registrering och inloggning
                    + "> LOGGA IN:          [2]\n"
                    + "> AVSLUTA:           [3]\n";
 
-    private final String AUTH_API_BASE_URL = "http://localhost:5000/api/v1/auth";
+    private final String AUTH_API_BASE_URL = "http://ec2-13-53-167-112.eu-north-1.compute.amazonaws.com/api/v1/auth";
     private final RestTemplate restTemplate;
     private String jwtToken;
 

@@ -28,7 +28,7 @@ import static org.example.API.payload.Payload.createPayload;
 
 public class JokeAPI {
 
-    private static String BASE_URL = "http://localhost:5000/api/v1/jokes";
+    private static String BASE_URL = "http://ec2-13-53-167-112.eu-north-1.compute.amazonaws.com/api/v1/jokes";
     private static final CloseableHttpClient httpClient = HttpClients.createDefault();
 
     public static Joke getRandomJoke(String jwt) throws IOException, ParseException {
