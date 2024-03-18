@@ -24,24 +24,7 @@ public class UserAPI {
 
     // USER
     // Metod för att hämta en användare med specifikt ID
-    public static String getUserById(Long userId, String jwt) {
-        try {
-            URL url = new URL(BASE_URL + "/admin/" + userId);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("Authorization", "Bearer " + jwt);
-
-            int responseCode = connection.getResponseCode();
-            System.out.println("Response Code: " + responseCode);
-
-        } catch (IOException e) {
-            System.out.println("IOException: " + e.getMessage());
-            return null;
-        }
-        return jwt;
-    }
-
-    public static User getUserByIdd(Long id, String jwt) throws IOException, ParseException {
+    public static User getUserById(Long id, String jwt) throws IOException, ParseException {
         HttpGet get = new HttpGet(BASE_URL + "/admin/" + id);
         get.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
         CloseableHttpResponse response = httpClient.execute(get);

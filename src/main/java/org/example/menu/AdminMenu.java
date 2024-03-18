@@ -30,7 +30,7 @@ public class AdminMenu {
 
      static void displayMainMenu() throws IOException, ParseException {
         while (true) {
-            System.out.println("Välkommen till AdminMenyn!");
+            System.out.println("[ADMINMENY]");
             System.out.println("Välj ett alternativ:");
             System.out.println("1. Gå till Joke");
             System.out.println("2. Gå till Author");
@@ -191,7 +191,7 @@ public class AdminMenu {
     private static void handleUserMenu() throws IOException, ParseException {
         while (true) {
             System.out.println("[USERMENY]");
-            System.out.println("välj ett alternativ");
+            System.out.println("Välj ett alternativ");
             System.out.println("1. Hämta användare med specifikt ID");
             System.out.println("2. Hämta alla användare");
             System.out.println("3. Uppdatera en användare");
@@ -228,12 +228,10 @@ public class AdminMenu {
         }
     }
 
-    // behöver fixas.
     private static void getUserById() throws IOException, ParseException {
         Long userId = Scan.getLong("Ange ID för användaren du vill hämta:");
-        String username= UserAPI.getUserById(userId, jwt);
-        User user = UserAPI.getUserByIdd(userId, jwt);
-        if (username != null && user != null) {
+        User user = UserAPI.getUserById(userId, jwt);
+        if (user != null && user != null) {
             System.out.println("Användarinformation:");
             System.out.println(UserAPI.getUserById(userId, jwt));
             System.out.println("NAMN: " + user.getUsername());
