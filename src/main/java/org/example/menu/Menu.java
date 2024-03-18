@@ -14,13 +14,13 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.util.Set;
 
-public class Menu { // huvud meny för att registrering och inloggning
+public class Menu { // huvud meny för registrering och inloggning
 
    private static String MENU =
            "> GÖR VAL:\n"
-                   + "> REGISTER:    [1]\n"
-                   + "> LOG IN:      [2]\n"
-                   + "> EXIT:        [3]\n";
+                   + "> REGISTRERA DIG:    [1]\n"
+                   + "> LOGGA IN:          [2]\n"
+                   + "> AVSLUTA:           [3]\n";
 
     private final String AUTH_API_BASE_URL = "http://localhost:5000/api/v1/auth";
     private final RestTemplate restTemplate;
@@ -48,10 +48,10 @@ public class Menu { // huvud meny för att registrering och inloggning
                 login();
                 break;
             case 3:
-                System.out.println("Thank you for using our application!");
+                System.out.println("Tack för att du använder vår applikation!");
                 System.exit(0);
             default:
-                System.out.println("Invalid selection. Please try again.");
+                System.out.println("Ogiltigt val. Försök igen.");
                 displayMenu();
                 break;
         }
@@ -60,12 +60,12 @@ public class Menu { // huvud meny för att registrering och inloggning
 
 
     private void register() throws IOException, ParseException {
-        String username = Scan.getString("Enter username:");
+        String username = Scan.getString("Ange användarnamn:");
         String password = "";
-        //String password = Scan.getString("Enter password");
+
 
         while (true) {
-            password = Scan.getString("Enter password: (minst 8 tecken med minst en siffra):");
+            password = Scan.getString("Ange lösenord: (minst 8 tecken med minst en siffra):");
             if (password.length() >= 8 && password.matches(".*\\d.*")) {
                 break;
             } else {
@@ -78,10 +78,10 @@ public class Menu { // huvud meny för att registrering och inloggning
         try {
             ResponseEntity<LoginResponseDTO> responseEntity = restTemplate.postForEntity(registerUrl, registrationDTO, LoginResponseDTO.class);
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
-                System.out.println("User registered!");
+                System.out.println("Användare registrerad!");
                 login();
             } else {
-                System.out.println("Registration failed!");
+                System.out.println("Registreringen misslyckades!");
                 displayMenu();
             }
         } catch (HttpClientErrorException ex) {
@@ -95,8 +95,8 @@ public class Menu { // huvud meny för att registrering och inloggning
     }
 
     private void login() throws IOException, ParseException {
-        String username = Scan.getString("Enter username:");
-        String password = Scan.getString("Enter password:");
+        String username = Scan.getString("Ange användarnamn:");
+        String password = Scan.getString("Ange lösenord:");
         String loginUrl = AUTH_API_BASE_URL + "/login";
         RegistrationDTO loginDTO = new RegistrationDTO(username, password);
         try {
@@ -104,18 +104,18 @@ public class Menu { // huvud meny för att registrering och inloggning
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 LoginResponseDTO loginResponseDTO = responseEntity.getBody();
                 this.jwtToken = loginResponseDTO.getJwt();
-                System.out.println("Login successful!");
+                System.out.println("Inloggningen lyckades!");
                 User user = loginResponseDTO.getUser();
                 navigateToMenu(user.getAuthorities());
             } else {
-                System.out.println("Login failed. Please check your credentials and try again.");
+                System.out.println("Inloggningen misslyckades. Kontrollera dina inloggningsuppgifter och försök igen.");
                 displayMenu();
             }
         } catch (HttpClientErrorException ex) {
             if (ex.getStatusCode() == HttpStatus.BAD_REQUEST) {
-                System.out.println("Invalid username or password. Please try again.");
+                System.out.println("Ogiltigt användarnamn eller lösenord. Försök igen.");
             } else {
-                System.out.println("Login failed due to client error. Please try again later.");
+                System.out.println("Inloggningen misslyckades på grund av klientfel. Försök igen senare.");
             }
             displayMenu();
         }
