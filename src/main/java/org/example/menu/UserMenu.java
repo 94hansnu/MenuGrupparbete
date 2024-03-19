@@ -120,7 +120,8 @@ public class UserMenu {
                 break;
             }
             case 7: {
-                System.exit(0);
+                Menu menu = new Menu();
+                menu.displayMenu();
                 break;
             }
             default: {

@@ -35,6 +35,7 @@ public class AdminMenu {
             System.out.println("1. Gå till Joke");
             System.out.println("2. Gå till Author");
             System.out.println("3. Gå till User");
+            System.out.println("4. Logga ut");
             System.out.println("0. Avsluta programmet.");
 
             Long choice = Scan.getLong("Ange ditt val: ");
@@ -47,6 +48,10 @@ public class AdminMenu {
                     break;
                 case 3:
                     handleUserMenu();
+                    break;
+                case 4:
+                    Menu menu = new Menu();
+                    menu.displayMenu();
                     break;
                 case 0:
                     System.out.println("Programmet avslutas.");
